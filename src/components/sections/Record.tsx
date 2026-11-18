@@ -98,7 +98,7 @@ function StepPanel({ step }: { step: Step }) {
             <a
               href={step.next.href}
               {...(step.next.external ? { target: "_blank", rel: "noopener" } : {})}
-              className="group inline-flex min-h-11 items-center gap-2 font-mono text-[12.5px] text-ink"
+              className="group inline-flex min-h-11 items-center gap-2 font-mono text-[13.5px] text-ink"
             >
               <span aria-hidden className="transition-transform duration-200 group-hover:translate-x-1">{step.next.external ? "↗" : "→"}</span>
               <span className="border-b border-[var(--line-strong)] pb-0.5 transition-colors group-hover:border-ink">{step.next.label}</span>
@@ -107,7 +107,7 @@ function StepPanel({ step }: { step: Step }) {
           <button
             type="button"
             onClick={() => openVolume(volumeIndex(step.volume))}
-            className="inline-flex min-h-11 items-center gap-2 font-mono text-[12.5px] text-ink-3 transition-colors hover:text-ink"
+            className="inline-flex min-h-11 items-center gap-2 font-mono text-[13.5px] text-ink-2 transition-colors hover:text-ink"
           >
             <span className="grid size-6 place-items-center rounded-full bg-accent text-[10px] text-accent-ink">{v.roman}</span>
             Open the volume

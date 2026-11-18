@@ -39,14 +39,54 @@ export function shelfHost(frame: HTMLIFrameElement) {
   doc.head.appendChild(style);
 }
 
+/* Phones and tablets. The authored page assumes a mouse: books react on
+   hover, which iOS turns into "first tap hovers, second tap opens". And
+   on a phone an opened volume puts its text below the fold inside the
+   frame's own scroll. These rules show the "Read" badge up front on touch
+   screens and fit an opened volume into one screen, with its text in the
+   panel's own (authored) scroll box. */
+const SHOWCASE_TOUCH_CSS = `
+@media (hover: none) {
+  .book-card:hover { --hover-y: 0px; }
+  .book-card:hover .book { transform: none; }
+  [data-mode="gallery"] .book-card[data-book="data"] .open-badge {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(-3deg);
+  }
+}
+@media (max-width: 560px) {
+  [data-mode="detail"] .stage { min-height: 100svh !important; overflow: hidden !important; }
+  [data-mode="detail"] .book-card.selected { left: 27% !important; top: 28svh !important; width: min(32vw, 140px) !important; }
+  .detail-panel { top: calc(28svh + 112px) !important; padding-bottom: 0 !important; }
+  .detail-title { font-size: 40px !important; margin-bottom: 10px !important; }
+  .detail-scroll { max-height: calc(72svh - 112px - 54px - 104px) !important; padding-bottom: 36px !important; }
+  .detail-description, .doc-step-copy span, .doc-review { font-size: 15px !important; }
+  .bottom-dock .meta-row, .bottom-dock .detail-rule { display: none !important; }
+}`;
+
 /** Field Manuals: the stage never scrolls on desktop, so wheel input is
  *  forwarded to the portfolio instead of dying inside the frame. Its own
- *  detail scroller keeps native behaviour. */
+ *  detail scroller keeps native behaviour. On touch screens a tap opens a
+ *  book at once and an opened volume fits the screen. */
 export function showcaseHost(frame: HTMLIFrameElement) {
   const win = frame.contentWindow;
   const doc = frame.contentDocument;
   if (!win || !doc?.documentElement || doc.documentElement.hasAttribute(MARK)) return;
   doc.documentElement.setAttribute(MARK, "");
+
+  const style = doc.createElement("style");
+  style.textContent = SHOWCASE_TOUCH_CSS;
+  doc.head.appendChild(style);
+
+  // a touch never "hovers": keep the authored hover handler from turning
+  // the first tap into a hover (iOS then swallows the click)
+  win.addEventListener(
+    "pointerenter",
+    (event) => {
+      if (event.pointerType !== "mouse") event.stopPropagation();
+    },
+    { capture: true },
+  );
 
   win.addEventListener(
     "wheel",

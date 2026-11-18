@@ -1690,14 +1690,14 @@
         </button>
         <p class="page-status" aria-live="off">
           <strong id="page-label">Closed</strong>
-          <span id="page-counter">Click book to open</span>
+          <span id="page-counter">Tap the book to open</span>
         </p>
         <button class="page-button" id="next-page" type="button" aria-label="Next sample page" disabled>
           <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5.5 3.5 4.5 4.5-4.5 4.5"></path></svg>
         </button>
       </div>
       <div class="detail-controls">
-        <p class="microcopy">Drag cover or click once to open · Background to orbit</p>
+        <p class="microcopy">Drag the cover or tap the book · Drag around it to orbit</p>
         <div class="detail-buttons">
           <button class="text-button reset-button" id="toggle-book" type="button" aria-pressed="false">Open book</button>
           <button class="text-button reset-button" id="reset-view" type="button">Reset view</button>
@@ -4411,12 +4411,12 @@
       pageLabel.textContent = readingOpen ? labels[currentSpread] : "Closed";
       pageCounter.textContent = readingOpen
         ? `${pad(currentSpread + 1)} / ${pad(SPREAD_COUNT)}`
-        : "Click book to open";
+        : "Tap the book to open";
       toggleBookButton.textContent = readingOpen ? "Close book" : "Open book";
       toggleBookButton.setAttribute("aria-pressed", String(readingOpen));
       detailMicrocopy.textContent = readingOpen
-        ? "Drag pages · Drag cover to close · Background to orbit"
-        : "Drag cover or click once to open · Background to orbit";
+        ? "Swipe pages · Drag the cover to close · Drag around it to orbit"
+        : "Drag the cover or tap the book · Drag around it to orbit";
       previousPageButton.setAttribute(
         "aria-label",
         previousDisabled
