@@ -28,7 +28,10 @@ const BULB = {
 };
 
 const CERTS = [
-  "Cybersecurity: Cisco CCNA",
+  'CCNA: Introduction to Networks (Cisco Networking Academy, Sep 2026) · <a href="https://www.credly.com/badges/31e76847-b8bf-4fb3-8f46-7b6b89ea390a">verify on Credly</a>',
+  "CCNA: Switching, Routing, and Wireless Essentials (Cisco Networking Academy, Sep 2026)",
+  "CCNA: Enterprise Networking, Security, and Automation (Cisco Networking Academy, Oct 2026)",
+  "CyberOps Associate (Cisco Networking Academy, Nov 2026)",
   "Data Analytics Certification",
   "Google Analytics Certified",
   "Google Ads Certified",
@@ -126,12 +129,12 @@ export const CVS = [
   },
   {
     slug: "security",
-    headline: "IT Analyst | Fraud Prevention, QA & Cybersecurity Foundations | Cisco CCNA",
+    headline: "IT Analyst | Fraud Prevention, QA & Security Operations | CCNA Track & CyberOps Associate",
     profile:
-      "IT and security-minded analyst, Cisco CCNA trained, with seven years in fintech and digital programmes. At MinieMoney I was part of the team that built the <b>anti-fraud system</b> blocking duplicate accounts and false identities at sign-up, protecting a user base that grew from <b>4,000 to 40,000 in 12 months</b>. Hands-on with QA, access control and automation. Looking for a role in IT support, IT operations, IT analysis or cybersecurity.",
+      "IT and security-minded analyst who has completed Cisco's full CCNA course track and CyberOps Associate, with seven years in fintech and digital programmes. At MinieMoney I was part of the team that built the <b>anti-fraud system</b> blocking duplicate accounts and false identities at sign-up, protecting a user base that grew from <b>4,000 to 40,000 in 12 months</b>. Hands-on with QA, access control and automation. Looking for a role in IT support, IT operations, IT analysis or cybersecurity.",
     competencies: [
       "Fraud Prevention & Identity Checks", "Cybersecurity Foundations",
-      "Networking Fundamentals (Cisco CCNA)", "Access Control & Data Protection",
+      "Networking: Routing, Switching & Wireless", "Security Monitoring & Incident Response",
       "Software QA & Release Testing", "IT Support & Troubleshooting",
       "Scripting & Automation (Python, SQL)", "Ticketing & Issue Tracking (Jira, Zendesk)",
     ],
@@ -154,8 +157,8 @@ export const CVS = [
       BULB,
     ],
     skills: [
-      ["IT & Networking", "Cisco CCNA, networking fundamentals, troubleshooting, macOS and Windows"],
-      ["Security", "Fraud prevention, identity checks, access control, password-protected deployments, data protection"],
+      ["IT & Networking", "CCNA course track: networks, routing, switching, wireless, enterprise networking and automation; troubleshooting, macOS and Windows"],
+      ["Security", "Security monitoring and incident response (CyberOps Associate), fraud prevention, identity checks, access control, data protection"],
       ["QA & Ticketing", "Jira, qTest, TestFlight, Firebase Test Lab, Zendesk"],
       ["Scripting & Data", "Python, SQL, SQLite, Excel, Power BI, GitHub Actions"],
       ["Soft Skills", "Attention to detail, documentation, process discipline, clear communication, problem solving"],

@@ -47,7 +47,8 @@ function html(cv, { phone }) {
   .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 20px; break-inside: avoid; }
   .muted { color: #7a8088; font-size: 9pt; }
   .blue { color: #5b7fa8; font-size: 9.6pt; }
-  .certs { columns: 2; column-gap: 28px; margin: 0; padding-left: 16px; }
+  .certs { margin: 0; padding-left: 16px; }
+  .certs a { color: #5b7fa8; text-decoration: none; }
 </style></head><body>
   <h1>${CONTACT.name}</h1>
   <div class="headline">${esc(cv.headline)}</div>
@@ -59,7 +60,7 @@ function html(cv, { phone }) {
     <div class="job"><h3>${esc(j.title)}</h3><div class="org">${esc(j.org)}</div><div class="dates">${j.dates}</div>
     <ul>${j.bullets.map((b) => `<li>${b}</li>`).join("")}</ul></div>`).join(""))}
   ${section("Technical Skills", `<table>${cv.skills.map(([k, v]) => `<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join("")}</table>`)}
-  ${section("Certifications", `<ul class="certs">${cv.certs.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>`)}
+  ${section("Certifications", `<ul class="certs">${cv.certs.map((c) => `<li>${c}</li>`).join("")}</ul>`)}
   ${section("Education", `<div class="grid3">${cv.education.map((e) => `<div><b>${esc(e.degree)}</b><div class="blue">${esc(e.school)}</div><div class="muted">${e.note}</div></div>`).join("")}</div>`)}
   ${section("References", `<div class="grid3">${cv.references.map((r) => `<div><b>${esc(r.name)}</b><div class="muted">${esc(r.role)}</div></div>`).join("")}</div>`)}
 </body></html>`;

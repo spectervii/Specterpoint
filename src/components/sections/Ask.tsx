@@ -27,7 +27,7 @@ const ANSWERS: Answer[] = [
   {
     q: "For a security team?",
     a: [
-      "Cisco CCNA trained. Helped build MinieMoney's anti-fraud system, which stops duplicate accounts and false identities at sign-up.",
+      "Completed Cisco's full CCNA course track and CyberOps Associate. Helped build MinieMoney's anti-fraud system, which stops duplicate accounts and false identities at sign-up.",
       "Locks sensitive data behind role-based access and tests every release before it ships.",
     ],
     sources: [cv("IT & Cybersecurity CV", CONTACT.cv.security), LINKEDIN, ENGAGE],
