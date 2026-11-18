@@ -9,6 +9,11 @@
 
 const MARK = "data-specter-host";
 
+/** the blank document a frame shows before its page loads. Browsers keep the
+ *  same window object when the real page replaces it, so anything attached
+ *  to the placeholder would end up attached twice. */
+export const isPlaceholder = (doc: Document) => doc.URL === "about:blank";
+
 /** Complete Shelf: its hero wheel handler turns every wheel tick into a
  *  shelf move. Vertical wheel scrolls the portfolio; horizontal wheel and
  *  trackpad swipes, arrows, markers and clicks still drive the shelf. On
@@ -17,7 +22,7 @@ const MARK = "data-specter-host";
 export function shelfHost(frame: HTMLIFrameElement) {
   const win = frame.contentWindow;
   const doc = frame.contentDocument;
-  if (!win || !doc?.documentElement || doc.documentElement.hasAttribute(MARK)) return;
+  if (!win || !doc?.documentElement || isPlaceholder(doc) || doc.documentElement.hasAttribute(MARK)) return;
   doc.documentElement.setAttribute(MARK, "");
 
   win.addEventListener(
@@ -77,7 +82,7 @@ const SHOWCASE_TOUCH_CSS = `
 export function showcaseHost(frame: HTMLIFrameElement) {
   const win = frame.contentWindow;
   const doc = frame.contentDocument;
-  if (!win || !doc?.documentElement || doc.documentElement.hasAttribute(MARK)) return;
+  if (!win || !doc?.documentElement || isPlaceholder(doc) || doc.documentElement.hasAttribute(MARK)) return;
   doc.documentElement.setAttribute(MARK, "");
 
   const style = doc.createElement("style");

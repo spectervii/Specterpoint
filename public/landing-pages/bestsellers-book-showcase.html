@@ -9,9 +9,8 @@
     content="Opeyemi Shodipo. Security, data and growth, in three volumes."
   >
   <title>Opeyemi Shodipo · Specterpoint</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=block" rel="stylesheet">
+  <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>@font-face{font-family:"Geist";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/geist-latin.woff2) format("woff2")}</style>
   <style>
     :root {
       --ink: #29251d;
@@ -1425,7 +1424,7 @@
         aria-label="Open Security"
         style="
           --cover-color: #363126;
-          --cover: url('/landing-pages/media/cover-security.jpg');
+          --cover: url('/landing-pages/media/cover-security.webp');
         "
       >
         <span class="book" aria-hidden="true">
@@ -1456,7 +1455,7 @@
         aria-label="Open Data"
         style="
           --cover-color: #945a3e;
-          --cover: url('/landing-pages/media/cover-data.jpg');
+          --cover: url('/landing-pages/media/cover-data.webp');
         "
       >
         <span class="book" aria-hidden="true">
@@ -1487,7 +1486,7 @@
         aria-label="Open Growth"
         style="
           --cover-color: #566044;
-          --cover: url('/landing-pages/media/cover-growth.jpg');
+          --cover: url('/landing-pages/media/cover-growth.webp');
         "
       >
         <span class="book" aria-hidden="true">

@@ -1,6 +1,6 @@
 "use client";
 
-import { shelfHost } from "@/components/threeui/hostBoundary";
+import { isPlaceholder, shelfHost } from "@/components/threeui/hostBoundary";
 import { VOLUMES, type Palette } from "./volumes";
 
 /* The portfolio and the 3D shelf share one origin, so the host can
@@ -24,7 +24,7 @@ function read(doc: Document) {
 export function attachShelf(el: HTMLIFrameElement) {
   shelfHost(el);
   const doc = el.contentDocument;
-  if (!doc?.documentElement || doc.documentElement.hasAttribute("data-specter-bridge")) return;
+  if (!doc?.documentElement || isPlaceholder(doc) || doc.documentElement.hasAttribute("data-specter-bridge")) return;
   doc.documentElement.setAttribute("data-specter-bridge", "");
   frame = el;
 
@@ -91,7 +91,7 @@ export async function openVolume(index: number) {
   const title = VOLUMES[index].title;
   const isFront = () => doc.getElementById("selection-title")?.textContent?.trim() === title;
   let steady = 0;
-  const end = performance.now() + 6000;
+  const end = performance.now() + 12000;
   while (performance.now() < end && steady < 5) {
     steady = isFront() ? steady + 1 : 0;
     await wait(120);

@@ -10,12 +10,8 @@
     content="The Shelf: seven volumes from the career of Opeyemi Shodipo."
   >
   <title>The Shelf · Opeyemi Shodipo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap"
-    rel="stylesheet"
-  >
+  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>@font-face{font-family:"Inter";font-style:normal;font-weight:400 600;font-display:swap;src:url(/fonts/inter-latin.woff2) format("woff2")}</style>
   <style>
     :root {
       color-scheme: dark;
@@ -1593,11 +1589,15 @@
     }
 
   </style>
+  <link rel="modulepreload" href="/vendor/three@0.165.0/build/three.module.min.js">
+  <link rel="preload" href="/landing-pages/media/shelf-cover-atlas.webp" as="image">
+  <link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>@font-face{font-family:"Geist";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/geist-latin.woff2) format("woff2")}</style>
   <script type="importmap">
     {
       "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+        "three": "/vendor/three@0.165.0/build/three.module.min.js",
+        "three/addons/": "/vendor/three@0.165.0/examples/jsm/"
       }
     }
   </script>

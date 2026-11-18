@@ -57,7 +57,6 @@ const STACKS: Record<PageFont, string> = {
 const GOOGLE_FAMILIES: Partial<Record<PageFont, string>> = {
   "instrument-serif": "Instrument+Serif:ital@0;1",
   newsreader: "Newsreader:ital,wght@0,400..700;1,400..700",
-  geist: "Geist:wght@400..700",
   inter: "Inter:wght@400;500;600;700",
 };
 
@@ -146,6 +145,10 @@ export function buildPageCustomization(
   }
 
   if (!rules.length) return undefined;
+  // Geist is served from this site, not Google, so the frames never wait on a third party
+  if (type.headingFont === "geist" || type.bodyFont === "geist") {
+    rules.unshift('@font-face{font-family:"Geist";font-style:normal;font-weight:400 700;font-display:swap;src:url(/fonts/geist-latin.woff2) format("woff2")}');
+  }
   const fontHref = families.size
     ? `https://fonts.googleapis.com/css2?${[...families].map((f) => `family=${f}`).join("&")}&display=swap`
     : undefined;

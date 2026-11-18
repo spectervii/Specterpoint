@@ -161,6 +161,11 @@ a:hover .animated-underline {
   background: #030304;
 }
 
+/* let the frame wrapper's colour show while a framed page paints, instead of black */
+.landing-page-frame > iframe {
+  background: transparent !important;
+}
+
 .shader-frame {
   position: relative;
   width: 100%;

@@ -57,10 +57,15 @@ export default function FramePauser() {
     wrappers.forEach((w) => {
       io.observe(w);
       // a frame that finishes loading while off-screen starts paused
-      w.querySelector("iframe")?.addEventListener("load", (event) => {
-        const frame = event.currentTarget as HTMLIFrameElement;
-        if (visible.get(w) === false) setPaused(frame, true);
-      });
+      // (captured on the wrapper, so frames mounted later are covered too)
+      w.addEventListener(
+        "load",
+        (event) => {
+          const frame = event.target as HTMLIFrameElement;
+          if (frame.tagName === "IFRAME" && visible.get(w) === false) setPaused(frame, true);
+        },
+        true,
+      );
     });
     return () => io.disconnect();
   }, []);
