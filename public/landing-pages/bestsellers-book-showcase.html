@@ -9,6 +9,9 @@
     content="Opeyemi Shodipo. Security, data and growth, in three volumes."
   >
   <title>Opeyemi Shodipo · Specterpoint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&display=block" rel="stylesheet">
   <style>
     :root {
       --ink: #29251d;
@@ -1359,6 +1362,45 @@
         transition-delay: 0ms !important;
       }
     }
+
+    /* ── type (Specterpoint): Geist from the first frame, upright ── */
+    body { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .brand, .hero-word, .cover-title, .detail-title, .menu-link { font-family: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-style: normal; font-weight: 600; }
+    .cover-kicker, .cover-subtitle, .ticket-button, .open-badge, .doc-label, .doc-step-copy strong, .doc-steps li::before, .review-source, .year, .pill { font-style: normal; }
+    .hero-word { letter-spacing: -.07em; }
+    @media (max-width: 900px) { .hero-word { font-size: clamp(96px, 23vw, 200px); } }
+    @media (max-width: 560px) { .hero-word { font-size: 26vw; top: 20vh; } }
+
+    /* ── entrance (Specterpoint): the volumes gather on first load ── */
+    @keyframes gather-left {
+      0% { transform: translate3d(-90vw, 14vh, 0) rotate(-28deg); opacity: 0; }
+      35% { opacity: 1; }
+      100% { transform: none; }
+    }
+    @keyframes gather-right {
+      0% { transform: translate3d(90vw, 14vh, 0) rotate(28deg); opacity: 0; }
+      35% { opacity: 1; }
+      100% { transform: none; }
+    }
+    @keyframes gather-rise {
+      0% { transform: translate3d(0, 80vh, 0) rotate(7deg) scale(.9); opacity: 0; }
+      40% { opacity: 1; }
+      100% { transform: none; }
+    }
+    @keyframes word-draw {
+      0% { opacity: 0; letter-spacing: .35em; filter: blur(14px); }
+      100% { opacity: 1; filter: blur(0); }
+    }
+    @keyframes shadow-settle {
+      0% { opacity: 0; }
+      100% { opacity: .72; }
+    }
+    .book-card[data-book="security"] .book { animation: gather-left 1500ms cubic-bezier(.16, 1, .3, 1) 250ms backwards; }
+    .book-card[data-book="growth"] .book { animation: gather-right 1500ms cubic-bezier(.16, 1, .3, 1) 380ms backwards; }
+    .book-card[data-book="data"] .book { animation: gather-rise 1600ms cubic-bezier(.16, 1, .3, 1) 560ms backwards; }
+    .book-shadow { animation: shadow-settle 900ms ease 1500ms backwards; }
+    .hero-word { animation: word-draw 1500ms cubic-bezier(.2, .78, .2, 1) 0ms backwards; }
+    .topbar { animation: word-draw 900ms ease 1700ms backwards; }
   </style>
 </head>
 <body data-mode="gallery" data-menu="closed">

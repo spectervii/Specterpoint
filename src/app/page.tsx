@@ -15,7 +15,7 @@ export default function Home() {
       <Engage />
       <Ask />
       <Hire />
-      <footer data-palette="engagecl" className="mx-auto flex w-full max-w-[1320px] flex-wrap items-center justify-between gap-3 px-4 pt-6 pb-10 sm:px-10">
+      <footer data-palette="shelf" className="mx-auto flex w-full max-w-[1320px] flex-wrap items-center justify-between gap-3 px-4 pt-6 pb-10 sm:px-10">
         <span className="kicker">specterpoint.online</span>
         <span className="kicker">Opeyemi Shodipo · Lagos · Remote</span>
       </footer>

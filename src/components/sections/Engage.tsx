@@ -7,8 +7,6 @@ import { openVolume } from "@/lib/shelfBridge";
 import { CONTACT, volumeIndex } from "@/lib/volumes";
 import { EngageHub } from "./visuals";
 
-const LAVENDER = "#a29bfe";
-
 export default function Engage() {
   const ref = useRef<HTMLElement>(null);
   const active = useSeen(ref, 0.3);
@@ -23,29 +21,22 @@ export default function Engage() {
     <section
       ref={ref}
       id="engage"
-      data-palette="engagecl"
+      data-palette="engage"
       aria-label="engagecl.com"
-      className="relative isolate overflow-hidden"
     >
-      {/* engagecl's glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{ background: "radial-gradient(60% 50% at 70% 45%, rgba(91,79,240,0.22), transparent 70%), radial-gradient(40% 35% at 15% 10%, rgba(162,155,254,0.08), transparent 70%)" }}
-      />
       <div className="mx-auto grid min-h-svh w-full max-w-[1320px] items-center gap-12 px-4 py-24 sm:px-10 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         <div className="flex min-w-0 flex-col gap-6">
-          <p className="font-sans text-[12.5px] font-medium uppercase tracking-[0.16em]" style={{ color: LAVENDER }}>
+          <p className="kicker">
             Founder · engagecl.com
           </p>
-          <h2 className="text-[clamp(64px,10vw,160px)] leading-[0.9] font-normal tracking-[-0.05em] text-ink tabular-nums" aria-label="Four channels, one platform">
+          <h2 className="display text-[clamp(64px,10vw,160px)] text-ink tabular-nums" aria-label="Four channels, one platform">
             <span aria-hidden>
               <RollingDigits value={value} />
             </span>
           </h2>
           <p className="max-w-[30ch] text-[clamp(18px,1.6vw,22px)] leading-snug text-ink-2">
             Our messages kept breaking across tools, so I built one place for{" "}
-            <span style={{ color: LAVENDER }}>push, WhatsApp, SMS and email</span>, with every customer tracked.
+            <span className="text-ink">push, WhatsApp, SMS and email</span>, with every customer tracked.
           </p>
           <div className="flex flex-wrap items-center gap-3 pt-2">
             <a
