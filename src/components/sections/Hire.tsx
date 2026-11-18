@@ -9,21 +9,39 @@ const QUESTIONS: ApprovalQuestion[] = [
   { q: "Best next step?", type: "radio", options: ["An intro call", "Send me the CV", "I'll send a brief"] },
 ];
 
+const AREA: Record<string, string> = {
+  "Security & IT": "security and IT",
+  "Data & analytics": "data and analytics",
+  "Growth & marketing": "growth and marketing",
+};
+
+const NEXT: Record<string, string> = {
+  "An intro call": "Could we set up a quick call?",
+  "Send me the CV": "Could you send me your CV?",
+  "I'll send a brief": "I'll follow up with a short brief.",
+};
+
+const list = (items: string[]) =>
+  items.length < 2 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+
 function draft(answers: Record<number, number[]>) {
   const pick = (q: number) => (answers[q] ?? []).map((i) => QUESTIONS[q].options[i]);
-  const role = pick(0)[0] ?? "a role";
-  const subject = `Hiring: ${role}`;
+  const role = pick(0)[0];
+  const area = role ? `your ${AREA[role] ?? role.toLowerCase()} work` : "your work";
+  const subject = role ? `Saw your portfolio: ${role}` : "Saw your portfolio";
   const body = [
-    "Hi Opeyemi,",
+    "Hey Opeyemi,",
     "",
-    `I'm hiring for ${role.toLowerCase()}.`,
-    pick(1).length ? `What matters most: ${pick(1).join(", ").toLowerCase()}.` : "",
-    pick(2).length ? `Next step: ${pick(2)[0].toLowerCase()}.` : "",
+    [
+      `I saw your portfolio, and I'd like to hear more about ${area}.`,
+      pick(1).length ? `We care most about ${list(pick(1).map((x) => x.toLowerCase()))} right now.` : "",
+      pick(2).length ? NEXT[pick(2)[0]] ?? "" : "",
+    ]
+      .filter(Boolean)
+      .join(" "),
     "",
-    "(Sent from specterpoint.online)",
-  ]
-    .filter((line, i, all) => line !== "" || all[i - 1] !== "")
-    .join("\n");
+    "Thanks,",
+  ].join("\n");
   return `mailto:${CONTACT.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
