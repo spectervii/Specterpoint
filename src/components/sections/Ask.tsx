@@ -59,7 +59,7 @@ export default function Ask() {
   const followUps = ANSWERS.filter((_, k) => k !== i).map((x) => x.q);
 
   return (
-    <section id="ask" data-palette="shelf" className="mx-auto grid min-h-svh w-full max-w-[1320px] items-center gap-10 px-4 py-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
+    <section id="ask" data-palette="engagecl" className="mx-auto grid min-h-svh w-full max-w-[1320px] items-center gap-10 px-4 py-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
       <div className="flex flex-col gap-4">
         <p className="kicker">Ask</p>
         <h2 key={answer.q} className="display text-[clamp(52px,8vw,128px)]" style={{ animation: "fade-up 500ms cubic-bezier(0.23,1,0.32,1) both" }}>

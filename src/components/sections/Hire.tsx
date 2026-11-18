@@ -37,7 +37,7 @@ const LINKS = [
 
 export default function Hire() {
   return (
-    <section id="hire" data-palette="shelf" className="mx-auto grid min-h-svh w-full max-w-[1320px] content-center items-center gap-12 px-4 py-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
+    <section id="hire" data-palette="engagecl" className="mx-auto grid min-h-svh w-full max-w-[1320px] content-center items-center gap-12 px-4 py-24 sm:px-10 lg:grid-cols-[1.1fr_1fr]">
       <div className="flex flex-col gap-8">
         <p className="kicker">Hire</p>
         <h2 className="display text-[clamp(72px,14vw,220px)]">Hiring?</h2>

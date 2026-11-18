@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { EARTH, VOLUMES, applyPalette, type Palette } from "@/lib/volumes";
+import { EARTH, ENGAGECL, VOLUMES, applyPalette, type Palette } from "@/lib/volumes";
 import { onShelfTheme } from "@/lib/shelfBridge";
 
 /* Whichever zone crosses the middle of the screen owns the page's
@@ -16,6 +16,7 @@ export default function ThemeDirector() {
     const paint = () => {
       if (zone === "shelf") applyPalette(shelfPalette);
       else if (zone === "earth") applyPalette(EARTH);
+      else if (zone === "engagecl") applyPalette(ENGAGECL);
       else applyPalette(VOLUMES.find((v) => v.id === zone)?.palette ?? EARTH);
     };
 

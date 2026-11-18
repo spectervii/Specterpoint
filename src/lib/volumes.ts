@@ -27,6 +27,16 @@ export const EARTH: Palette = {
   accentInk: "#29251d",
 };
 
+/* engagecl.com's own colours: deep navy, indigo, lavender */
+export const ENGAGECL: Palette = {
+  paper: "#0c0b1f",
+  paperDeep: "#070616",
+  ink: "#f4f4fb",
+  inkSoft: "#a4a6c1",
+  accent: "#5b4ff0",
+  accentInk: "#ffffff",
+};
+
 export const VOLUMES: Volume[] = [
   { id: "shield", roman: "I", title: "The Shield",
     palette: { paper: "#171a24", paperDeep: "#10131b", ink: "#f4eee6", inkSoft: "#b9b4ae", accent: "#c87046", accentInk: "#10131b" } },

@@ -49,6 +49,12 @@ const SHOWCASE_TOUCH_CSS = `
 @media (hover: none) {
   .book-card:hover { --hover-y: 0px; }
   .book-card:hover .book { transform: none; }
+  /* nothing may appear on a touch "hover", or iOS treats the tap as a hover */
+  .book-card:hover .open-badge,
+  .book-card[data-hovered="true"] .open-badge {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(.76) rotate(-3deg);
+  }
   [data-mode="gallery"] .book-card[data-book="data"] .open-badge {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1) rotate(-3deg);
@@ -87,6 +93,24 @@ export function showcaseHost(frame: HTMLIFrameElement) {
     },
     { capture: true },
   );
+
+  // backup: a clean tap on a book opens it even if the browser drops the click
+  let start: { x: number; y: number; t: number } | null = null;
+  win.addEventListener("touchstart", (e) => {
+    const t = e.touches[0];
+    start = e.touches.length === 1 ? { x: t.clientX, y: t.clientY, t: Date.now() } : null;
+  }, { passive: true, capture: true });
+  win.addEventListener("touchend", (e) => {
+    const t = e.changedTouches[0];
+    const card = (e.target as Element | null)?.closest?.(".book-card") as HTMLButtonElement | null;
+    if (!start || !card || !t) return;
+    const clean = Math.hypot(t.clientX - start.x, t.clientY - start.y) < 12 && Date.now() - start.t < 600;
+    start = null;
+    if (!clean) return;
+    win.setTimeout(() => {
+      if (doc.body.dataset.mode === "gallery") card.click();
+    }, 380);
+  }, { passive: true, capture: true });
 
   win.addEventListener(
     "wheel",
