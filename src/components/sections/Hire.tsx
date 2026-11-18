@@ -4,6 +4,7 @@ import { useState } from "react";
 import ApprovalCard, { type ApprovalQuestion } from "@/components/ApprovalCard";
 import { Button } from "@/components/atoms/Button";
 import LoadingState from "@/components/LoadingState";
+import GlideMenu from "@/components/primitives/GlideMenu";
 import { CONTACT } from "@/lib/volumes";
 
 const QUESTIONS: ApprovalQuestion[] = [
@@ -62,8 +63,12 @@ const LINKS = [
 type Draft = { subject: string; body: string };
 type Status = "idle" | "sending" | "sent" | "error";
 
-const field =
-  "w-full rounded-control bg-inset px-3 py-2.5 font-sans text-[14px] text-ink shadow-hairline outline-none placeholder:text-ink-3 focus:shadow-[0_0_0_1.5px_var(--ink)]";
+/* The send step is the approval card template, one step further: the same
+   card shell, question heading, glide-highlighted input rows, step footer
+   and pill actions, and the template's own "sent" state. */
+
+const ROW = "relative z-10 flex items-center gap-1.5 rounded-control pl-1 pr-2 py-1 transition-colors duration-100";
+const INPUT = "min-w-0 flex-1 bg-transparent pl-1.5 text-[13px] text-ink outline-none placeholder:text-ink-3";
 
 function SendStep({ draft, onBack }: { draft: Draft; onBack: () => void }) {
   const [name, setName] = useState("");
@@ -90,55 +95,66 @@ function SendStep({ draft, onBack }: { draft: Draft; onBack: () => void }) {
 
   if (status === "sent") {
     return (
-      <div className="flex w-full max-w-80 flex-col gap-2" style={{ animation: "pop-in 260ms cubic-bezier(0.23,1,0.32,1) both" }}>
-        <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-green-tint py-1 pr-2.5 pl-1 text-[12.5px] font-medium text-green">
+      <div className="flex w-full max-w-80 items-center gap-3" style={{ animation: "pop-in 260ms cubic-bezier(0.23,1,0.32,1) both" }}>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-green-tint py-1 pr-2.5 pl-1 text-[12.5px] font-medium text-green">
           <span className="flex size-4.5 items-center justify-center rounded-full bg-green text-white">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
           </span>
-          Sent
+          Message sent
         </span>
-        <p className="font-sans text-[13px] text-ink-2">Thanks, {name.split(" ")[0]}. Opeyemi will reply to {email}.</p>
       </div>
     );
   }
 
   return (
     <form
-      className="w-full max-w-80 overflow-hidden rounded-card bg-surface shadow-card"
-      style={{ animation: "fade-up 380ms cubic-bezier(0.23,1,0.32,1) both" }}
+      className="w-full max-w-80"
       onSubmit={(e) => {
         e.preventDefault();
         send();
       }}
     >
-      <div className="primitive-card-pad flex flex-col gap-2.5 font-sans">
-        <p className="text-[14px] font-medium text-ink">Where can Opeyemi reply?</p>
-        <input className={field} placeholder="Your name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} aria-label="Your name" maxLength={80} />
-        <input className={field} placeholder="Your email" type="email" inputMode="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} aria-label="Your email" maxLength={254} />
-        <textarea className={`${field} min-h-[132px] resize-none leading-relaxed`} value={message} onChange={(e) => setMessage(e.target.value)} aria-label="Message" maxLength={4000} />
-        {/* honeypot */}
-        <input tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" value={website} onChange={(e) => setWebsite(e.target.value)} name="website" />
-        {status === "error" && (
-          <p className="text-[12.5px] leading-snug text-ink-2">
-            That didn’t go through.{" "}
-            <a className="underline" href={mailto(draft.subject, `${message}\n${name}`)}>
-              Send it from your email app instead
-            </a>
-            .
-          </p>
-        )}
-      </div>
-      <div className="primitive-card-footer flex items-center justify-between gap-3 font-sans">
-        {status === "sending" ? (
-          <LoadingState label="Sending" variant="Dots" />
-        ) : (
-          <button type="button" onClick={onBack} className="text-[12.5px] font-medium text-ink-3 transition-colors hover:text-ink">
-            Back
-          </button>
-        )}
-        <Button type="submit" variant="accent" size="sm" disabled={!valid || status === "sending"}>
-          Send
-        </Button>
+      <div className="relative overflow-hidden rounded-card bg-surface shadow-card" style={{ animation: "fade-up 380ms cubic-bezier(0.23,1,0.32,1) both" }}>
+        <div className="primitive-card-pad">
+          <div className="pr-7 text-[14px] font-medium text-ink">Where can Opeyemi reply?</div>
+          <GlideMenu className="mt-2.5 flex flex-col gap-1" highlightClassName="inset-x-0 rounded-control bg-hover">
+            <label data-menu-row className={ROW}>
+              <input className={INPUT} placeholder="Your name" autoComplete="name" aria-label="Your name" maxLength={80} value={name} onChange={(e) => setName(e.target.value)} />
+            </label>
+            <label data-menu-row className={ROW}>
+              <input className={INPUT} placeholder="Your email" type="email" inputMode="email" autoComplete="email" aria-label="Your email" maxLength={254} value={email} onChange={(e) => setEmail(e.target.value)} />
+            </label>
+            <label data-menu-row className={`${ROW} items-start`}>
+              <textarea className={`${INPUT} resize-none leading-relaxed`} rows={7} aria-label="Message" maxLength={4000} value={message} onChange={(e) => setMessage(e.target.value)} />
+            </label>
+          </GlideMenu>
+          {/* honeypot */}
+          <input tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" name="website" value={website} onChange={(e) => setWebsite(e.target.value)} />
+          {status === "error" && (
+            <p className="mt-2 pl-2.5 text-[12px] text-ink-3">
+              Not sent.{" "}
+              <a className="text-ink-2 underline" href={mailto(draft.subject, `${message}\n${name}`)}>
+                Use your email app
+              </a>
+            </p>
+          )}
+        </div>
+
+        <div className="primitive-card-footer flex items-center justify-between gap-3">
+          {status === "sending" ? (
+            <LoadingState label="Sending" variant="Dots" />
+          ) : (
+            <span />
+          )}
+          <div className="-mr-0.5 flex items-center gap-1.5">
+            <Button variant="ghost" size="sm" onClick={onBack} disabled={status === "sending"}>
+              Back
+            </Button>
+            <Button type="submit" variant="accent" size="sm" disabled={!valid || status === "sending"}>
+              Send
+            </Button>
+          </div>
+        </div>
       </div>
     </form>
   );
