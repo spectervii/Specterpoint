@@ -161,6 +161,9 @@ export default function ApprovalCard({
   const [open, setOpen] = useState(true);
 
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // the latest answers, so a single-choice tap that auto-sends includes itself
+  const answersRef = useRef(answers);
+  answersRef.current = answers;
   const questionRefs = useRef<(HTMLDivElement | null)[]>([]);
   const measured = useRef(false);
   const [viewportH, setViewportH] = useState<number | undefined>(undefined);
@@ -208,7 +211,7 @@ export default function ApprovalCard({
   const send = () => {
     if (advanceTimer.current) clearTimeout(advanceTimer.current);
     setSent(true);
-    onSubmitted?.(answers);
+    onSubmitted?.(answersRef.current);
   };
 
   const advance = () => {
