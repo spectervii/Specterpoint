@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Up NEPA (light): the sketchbook template's paper, with greens ── */
+:root {
+  --paper: #ece7dc;
+  --page: #fbfaf6;
+  --page-edge: #e2dccd;
+  --ink: #2b2721;
+  --ink-2: #57524a;
+  --ink-3: #6f695f;
+  --line: rgba(43, 39, 33, 0.14);
+  --line-strong: rgba(43, 39, 33, 0.34);
+  --hover: rgba(79, 138, 62, 0.1);
+  --surface: #fbfaf6;
+  --inset: #f1eee5;
+  --shadow-ink: 58, 44, 26;
+
+  --g1: #e4ecd9;
+  --g2: #b9d3a3;
+  --g3: #86b26f;
+  --g4: #4f8a3e;
+  --g5: #2f5f27;
+  --off: #d9d1c0;
+  --weak: #d8c27a;
+
+  --heat-none: transparent;
+  --heat-0: var(--off);
+  --heat-1: var(--g1);
+  --heat-2: var(--g2);
+  --heat-3: var(--g3);
+  --heat-4: var(--g4);
+
+  --tooltip-bg: #2b2721;
+  --tooltip-ink: #fbfaf6;
+  --tooltip-muted: #c9c2b4;
+
+  --mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --track-caps: 0.2em;
+  color-scheme: light;
+}
+
+/* ── Down NEPA (dark): night paper, lit areas glow ── */
+.dark {
+  --paper: #161915;
+  --page: #1f231e;
+  --page-edge: #2b3029;
+  --ink: #ece7dc;
+  --ink-2: #c4bfb3;
+  --ink-3: #a19c90;
+  --line: rgba(236, 231, 220, 0.13);
+  --line-strong: rgba(236, 231, 220, 0.32);
+  --hover: rgba(169, 210, 126, 0.12);
+  --surface: #262b24;
+  --inset: #1a1e19;
+  --shadow-ink: 0, 0, 0;
+
+  --g1: #2d3d27;
+  --g2: #3f6633;
+  --g3: #6a9c4f;
+  --g4: #a3d07a;
+  --g5: #d6f0b0;
+  --off: #343832;
+  --weak: #9c8a4c;
+
+  --tooltip-bg: #ece7dc;
+  --tooltip-ink: #1f231e;
+  --tooltip-muted: #57524a;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-paper: var(--paper);
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-inset: var(--inset);
+  --color-hover: var(--hover);
+  --color-line: var(--line);
+  --color-g1: var(--g1);
+  --color-g2: var(--g2);
+  --color-g3: var(--g3);
+  --color-g4: var(--g4);
+  --color-g5: var(--g5);
+  --font-mono: var(--mono);
+  --font-sans: var(--mono);
+  --radius-card: 10px;
+  --radius-control: 7px;
+  --shadow-hairline: 0 0 0 1px var(--line);
+  --shadow-raised: 0 0 0 1px var(--line), 0 6px 18px -10px rgb(var(--shadow-ink) / 0.35);
+  --shadow-overlay: 0 0 0 1px var(--line), 0 12px 28px -10px rgb(var(--shadow-ink) / 0.45);
+}
+
+@layer base {
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; background: var(--paper); }
+body {
+  font-family: var(--mono);
+  font-weight: 400;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+::selection { background: var(--g4); color: var(--page); }
+:focus-visible { outline: 2px solid var(--g4); outline-offset: 2px; border-radius: 4px; }
+}
+
+/* ── keyframes the supplied components rely on ── */
+@keyframes pixel-on { 0%, 100% { opacity: 0.15; } 40% { opacity: 1; } }
+@keyframes shimmer-text { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ── the desk: a soft wash behind the book ── */
+.wash {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 18% 12%, color-mix(in srgb, var(--g1) 70%, transparent), transparent 70%),
+    radial-gradient(50% 40% at 85% 90%, color-mix(in srgb, var(--g2) 35%, transparent), transparent 70%),
+    var(--paper);
+}
+
+/* ── top bar (from the sketchbook template) ── */
+.top {
+  position: relative; z-index: 50;
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  padding: 16px clamp(16px, 4vw, 48px) 0; text-align: center;
+}
+.top .name { font-weight: 700; font-size: 17px; letter-spacing: 0.04em; line-height: 1; }
+.top nav { display: flex; gap: clamp(12px, 2vw, 22px); font-size: 12.5px; align-items: center; letter-spacing: 0.06em; }
+.top nav a, .top nav button.navlink { color: var(--ink-2); transition: color 0.2s; background: none; border: 0; padding: 4px 0; cursor: pointer; }
+.top nav a:hover, .top nav button.navlink:hover { color: var(--ink); }
+.top .sep { width: 1px; height: 14px; background: var(--line); }
+
+.kicker {
+  font-size: 11px; letter-spacing: var(--track-caps); text-transform: uppercase; text-align: center;
+  color: var(--ink-3); margin: 12px 0 0;
+}
+
+/* ── the sketchbook ── */
+.desk {
+  display: grid; justify-items: center; align-content: center; gap: 12px;
+  min-height: 0; padding: 10px clamp(12px, 3vw, 40px) 12px;
+}
+.book {
+  position: relative;
+  width: min(1180px, 100%, calc((100svh - 196px) * 1.5));
+  aspect-ratio: 1.5;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+/* the spine */
+.book::after {
+  content: ""; position: absolute; z-index: 4; top: 0; bottom: 0; left: 50%; width: 1px; pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgb(var(--shadow-ink) / 0.22) 8%, rgb(var(--shadow-ink) / 0.22) 92%, transparent);
+}
+.cast { position: absolute; pointer-events: none; z-index: 0; }
+.cast.ambient {
+  left: 4%; right: 4%; top: 20%; bottom: -5%;
+  background: radial-gradient(50% 50% at 50% 58%, rgb(var(--shadow-ink) / 0.3) 0%, rgb(var(--shadow-ink) / 0.16) 40%, transparent 74%);
+  filter: blur(26px);
+}
+.cast.contact {
+  left: 6%; right: 6%; top: 70%; bottom: -3%;
+  background: radial-gradient(50% 44% at 50% 42%, rgb(var(--shadow-ink) / 0.34) 0%, rgb(var(--shadow-ink) / 0.14) 48%, transparent 78%);
+  filter: blur(11px);
+}
+.leaf {
+  position: relative; z-index: 1; min-width: 0; min-height: 0;
+  background: var(--page);
+  box-shadow: 0 1px 0 var(--page-edge), 0 2px 0 var(--page), 0 3px 0 var(--page-edge), 0 4px 0 var(--page);
+}
+.leaf.left { border-radius: 10px 3px 3px 12px; }
+.leaf.right { border-radius: 3px 10px 12px 3px; }
+/* the shadow the binding throws onto each page */
+.leaf::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 14%; pointer-events: none; z-index: 3;
+}
+.leaf.left::after { right: 0; background: linear-gradient(270deg, rgb(var(--shadow-ink) / 0.16), transparent); }
+.leaf.right::after { left: 0; background: linear-gradient(90deg, rgb(var(--shadow-ink) / 0.13), transparent); }
+/* paper grain */
+.leaf::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0.5; border-radius: inherit;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .22 0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.dark .leaf::before { opacity: 0.35; }
+
+.tools {
+  display: flex; align-items: center; gap: 6px;
+  border: 1px solid var(--line); border-radius: 999px; padding: 4px 7px;
+  background: color-mix(in srgb, var(--page) 70%, transparent);
+  backdrop-filter: blur(8px);
+}
+.tool {
+  width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%; background: transparent; color: var(--ink-2); cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.tool:hover { background: var(--hover); color: var(--ink); }
+.tool:disabled { opacity: 0.32; cursor: default; background: transparent; }
+.tool svg { width: 15px; height: 15px; display: block; }
+.tool-sep { width: 1px; height: 17px; background: var(--line); margin: 0 2px; }
+.zoom-read { font-size: 11px; letter-spacing: 0.1em; color: var(--ink-3); min-width: 40px; text-align: center; font-variant-numeric: tabular-nums; }
+
+.caps { font-size: 10.5px; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--ink-3); }
+
+@media (min-width: 861px) {
+  .shell { height: 100svh; display: grid; grid-template-rows: auto auto 1fr; overflow: hidden; }
+}
+@media (max-width: 860px) {
+  .book { width: 100%; aspect-ratio: auto; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .book::after { display: none; }
+  .desk { justify-items: stretch; }
+  .leaf.left, .leaf.right { border-radius: 10px; }
+  .leaf::after { display: none; }
+  .leaf.left { aspect-ratio: 1000 / 818; }
+  .top nav { font-size: 12px; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

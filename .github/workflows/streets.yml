@@ -1,0 +1,38 @@
+name: Monthly street refresh
+
+# Rebuilds the street tiles from the latest OpenStreetMap extracts, so new and renamed
+# streets show up on their own. A change is committed to main, which Vercel deploys.
+on:
+  schedule:
+    - cron: "23 3 2 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  streets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download OpenStreetMap extracts
+        run: |
+          mkdir -p osm
+          for r in south_west north_central south_south; do
+            curl -sSfL --retry 3 -o "osm/$r.osm.pbf" "https://download.openstreetmap.fr/extracts/africa/nigeria/$r-latest.osm.pbf"
+          done
+      - name: Build street tiles
+        run: |
+          pip install -q osmium shapely
+          python scripts/build-streets.py osm/south_west.osm.pbf osm/north_central.osm.pbf osm/south_south.osm.pbf
+      - name: Commit if anything changed
+        run: |
+          git add public/streets
+          if git diff --cached --quiet; then echo "No street changes"; exit 0; fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "Refresh streets from OpenStreetMap"
+          git push
