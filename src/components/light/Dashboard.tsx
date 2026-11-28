@@ -52,8 +52,16 @@ export default function Dashboard({ initial, initialPlace }: { initial: Snapshot
       tick((n) => n + 1);
     };
     const t = setInterval(load, POLL_MS);
+    // data older than 70 minutes: ask now (that starts a refresh on the server), then pick up the result
+    let soon: ReturnType<typeof setTimeout> | undefined;
+    if (!initial || Date.now() - new Date(initial.updatedAt).getTime() > 70 * 60_000) {
+      load();
+      soon = setTimeout(load, 45_000);
+    }
     document.addEventListener("visibilitychange", load);
-    return () => { clearInterval(t); document.removeEventListener("visibilitychange", load); };
+    return () => { clearInterval(t); clearTimeout(soon); document.removeEventListener("visibilitychange", load); };
+    // only the snapshot the page arrived with matters here
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // open an area from the URL (#lagos/ikeja), and keep the URL in step

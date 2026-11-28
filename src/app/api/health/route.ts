@@ -1,11 +1,15 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
+import { refreshIfStale } from "@/lib/server/refresh";
 import { getSnapshot } from "@/lib/server/snapshot-cache";
+
+export const maxDuration = 60;
 
 export const dynamic = "force-dynamic";
 
 /** For uptime monitors. Reads the cached snapshot, so it does not wake the database. */
 export async function GET() {
   const snap = await getSnapshot();
+  after(() => refreshIfStale(snap));
   const ageMin = snap ? Math.round((Date.now() - new Date(snap.updatedAt).getTime()) / 60000) : null;
   const ok = ageMin !== null && ageMin < 180;
   return NextResponse.json(
