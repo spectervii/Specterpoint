@@ -29,4 +29,9 @@ export const NEIGHBOURHOODS: [string, string][] = [
   ["Onitsha", "anambra/onitsha-north"], ["Awka", "anambra/awka-south"], ["Nnewi", "anambra/nnewi-north"],
   ["Kano", "kano/kano-municipal"], ["Sabon Gari Kano", "kano/fagge"], ["Kaduna", "kaduna/kaduna-north"], ["Barnawa", "kaduna/kaduna-south"],
   ["Zaria", "kaduna/zaria"], ["Jos", "plateau/jos-north"], ["Rayfield", "plateau/jos-south"],
+  // towns that are not LGA names themselves
+  ["Aba", "abia/aba-south"], ["Umuahia", "abia/umuahia-north"], ["Owerri", "imo/owerri-municipal"], ["Abakaliki", "ebonyi/abakaliki"],
+  ["Akure", "ondo/akure-south"], ["Ado-Ekiti", "ekiti/ado-ekiti"], ["Ile-Ife", "osun/ife-central"], ["Ilesa", "osun/ilesha-east"],
+  ["Ogbomosho", "oyo/ogbomosho-north"], ["Oyo", "oyo/oyo-east"], ["Sagamu", "ogun/shagamu"], ["Ijebu-Ode", "ogun/ijebu-ode"],
+  ["Benin", "edo/oredo"], ["Sapele", "delta/sapele"], ["Ughelli", "delta/ughelli-north"],
 ];

@@ -22,13 +22,13 @@ jobs:
       - name: Download OpenStreetMap extracts
         run: |
           mkdir -p osm
-          for r in south_west north_central south_south; do
+          for r in south_west north_central south_south south_east; do
             curl -sSfL --retry 3 -o "osm/$r.osm.pbf" "https://download.openstreetmap.fr/extracts/africa/nigeria/$r-latest.osm.pbf"
           done
       - name: Build street tiles
         run: |
           pip install -q osmium shapely
-          python scripts/build-streets.py osm/south_west.osm.pbf osm/north_central.osm.pbf osm/south_south.osm.pbf
+          python scripts/build-streets.py osm/south_west.osm.pbf osm/north_central.osm.pbf osm/south_south.osm.pbf osm/south_east.osm.pbf
       - name: Commit if anything changed
         run: |
           git add public/streets

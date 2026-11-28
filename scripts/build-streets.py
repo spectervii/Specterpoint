@@ -12,7 +12,7 @@ streets in the cities below, in the same projection as public/geo/nigeria.json:
 The map only fetches the tiles in view once it is zoomed in, so the page stays light.
 Street data © OpenStreetMap contributors, ODbL.
 
-    python scripts/build-streets.py south_west.osm.pbf north_central.osm.pbf south_south.osm.pbf
+    python scripts/build-streets.py south_west.osm.pbf north_central.osm.pbf south_south.osm.pbf south_east.osm.pbf
 
 Needs: pip install osmium shapely
 """
@@ -43,6 +43,30 @@ CITIES = [
     ("Port Harcourt", 4.70, 6.85, 4.98, 7.15),
     ("Warri and Effurun", 5.44, 5.65, 5.66, 5.88),
     ("Asaba", 6.12, 6.64, 6.28, 6.80),
+    ("Benin City", 6.27, 5.53, 6.42, 5.70),
+    # South West
+    ("Ibadan", 7.28, 3.78, 7.52, 4.05),
+    ("Ogbomosho", 8.07, 4.18, 8.20, 4.32),
+    ("Oyo", 7.80, 3.88, 7.90, 3.98),
+    ("Abeokuta", 7.08, 3.28, 7.22, 3.42),
+    ("Ota", 6.63, 3.10, 6.74, 3.27),
+    ("Sagamu", 6.80, 3.60, 6.88, 3.70),
+    ("Ijebu-Ode", 6.78, 3.88, 6.86, 3.97),
+    ("Osogbo", 7.72, 4.50, 7.82, 4.62),
+    ("Ile-Ife", 7.44, 4.52, 7.53, 4.60),
+    ("Ilesa", 7.59, 4.70, 7.66, 4.78),
+    ("Akure", 7.20, 5.15, 7.30, 5.27),
+    ("Ado-Ekiti", 7.58, 5.18, 7.67, 5.27),
+    # South East
+    ("Enugu", 6.38, 7.43, 6.52, 7.56),
+    ("Nsukka", 6.84, 7.36, 6.90, 7.43),
+    ("Onitsha", 6.08, 6.73, 6.20, 6.85),
+    ("Awka", 6.17, 7.03, 6.25, 7.12),
+    ("Nnewi", 5.98, 6.88, 6.06, 6.95),
+    ("Owerri", 5.43, 6.97, 5.54, 7.08),
+    ("Aba", 5.06, 7.31, 5.17, 7.42),
+    ("Umuahia", 5.49, 7.45, 5.57, 7.53),
+    ("Abakaliki", 6.28, 8.06, 6.36, 8.14),
 ]
 
 MAJOR = {"motorway", "trunk", "primary", "secondary", "tertiary",

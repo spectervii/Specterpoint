@@ -42,7 +42,7 @@ const Lgas = memo(function Lgas({ geo, levels, onPick, onHover }: {
   );
 });
 
-export default function NigeriaMap({ geo, places, levels, selected, onPick, live, pin, onLocate, locating }: {
+export default function NigeriaMap({ geo, places, levels, selected, onPick, live, pin, onLocate, locating, mode, onMode, legend, describe }: {
   geo: Geo | null;
   places: Map<string, Place>;
   levels: Record<string, number | null>;
@@ -54,6 +54,11 @@ export default function NigeriaMap({ geo, places, levels, selected, onPick, live
   pin?: { x: number; y: number; label: string } | null;
   onLocate?: () => void;
   locating?: boolean;
+  mode: "disco" | "reports";
+  onMode: (m: "disco" | "reports") => void;
+  legend: { label: string; from: string; to: string; empty: string | null; zero: boolean };
+  /** extra line for the hover label */
+  describe: (id: string) => string;
 }) {
   const W = geo?.w ?? 1000;
   const H = geo?.h ?? 818.4;
@@ -373,20 +378,40 @@ export default function NigeriaMap({ geo, places, levels, selected, onPick, live
         {hp && (
           <div className="pointer-events-none absolute left-3 top-3 rounded-[6px] px-2 py-1 text-[11px] shadow-overlay" style={{ background: "var(--tooltip-bg)", color: "var(--tooltip-ink)" }}>
             <span className="font-bold">{hp.n}</span>
-            <span style={{ color: "var(--tooltip-muted)" }}> · {hp.s}</span>
+            <span style={{ color: "var(--tooltip-muted)" }}> · {hp.s}{describe(hp.id) ? ` · ${describe(hp.id)}` : ""}</span>
           </div>
         )}
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-2 px-3 pb-3 pt-1 sm:px-4">
-        <div className="flex items-center gap-1 text-[10px] text-ink-3" aria-label="Hours of light a day">
-          <span className="mr-0.5 inline-block size-[10px] rounded-[2px] border border-line" style={{ background: "var(--page)" }} />
-          <span className="mr-2 whitespace-nowrap">No reports</span>
-          <span>0h</span>
-          {LEVEL_FILL.map((f) => (
-            <span key={f} className="inline-block h-[10px] w-[14px] rounded-[2px]" style={{ background: f }} />
-          ))}
-          <span>24h</span>
+        <div className="flex flex-col gap-1.5">
+          <div className="flex w-fit gap-0.5 rounded-full p-0.5 shadow-hairline" role="tablist" aria-label="Colour the map by">
+            {([["disco", "DisCo power"], ["reports", "Reports"]] as const).map(([k, label]) => (
+              <button
+                key={k}
+                type="button"
+                role="tab"
+                aria-selected={mode === k}
+                onClick={() => onMode(k)}
+                className={`rounded-full px-2.5 py-0.5 text-[10.5px] transition-colors ${mode === k ? "bg-g4 font-bold text-page" : "text-ink-2 hover:bg-hover"}`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-1 text-[10px] text-ink-3" aria-label={legend.label} title={legend.label}>
+            {legend.empty && (
+              <>
+                <span className="mr-0.5 inline-block size-[10px] rounded-[2px] border border-line" style={{ background: "var(--page)" }} />
+                <span className="mr-2 whitespace-nowrap">{legend.empty}</span>
+              </>
+            )}
+            <span className="whitespace-nowrap">{legend.from}</span>
+            {(legend.zero ? LEVEL_FILL : LEVEL_FILL.slice(1)).map((f) => (
+              <span key={f} className="inline-block h-[10px] w-[14px] rounded-[2px]" style={{ background: f }} />
+            ))}
+            <span className="whitespace-nowrap">{legend.to}</span>
+          </div>
         </div>
         <div className="tools" role="group" aria-label="Map controls">
           <button type="button" className="tool" aria-label="Zoom out" onClick={() => zoomBy(0.66)} disabled={view.s <= 1}>

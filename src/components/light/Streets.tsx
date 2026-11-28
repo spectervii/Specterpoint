@@ -30,6 +30,15 @@ function tile(path: string) {
   return p;
 }
 
+/** Where an area overlaps a street-mapped city: the middle of that overlap, or null. */
+export function cityPoint(index: Index | null, b: number[]): [number, number] | null {
+  for (const { box: [x0, y0, x1, y1] } of index?.cities ?? []) {
+    const ax = Math.max(x0, b[0]), ay = Math.max(y0, b[1]), bx = Math.min(x1, b[2]), by = Math.min(y1, b[3]);
+    if (ax < bx && ay < by) return [(ax + bx) / 2, (ay + by) / 2];
+  }
+  return null;
+}
+
 export function inCity(index: Index | null, x: number, y: number) {
   return !!index?.cities.some(({ box: [x0, y0, x1, y1] }) => x >= x0 && x <= x1 && y >= y0 && y <= y1);
 }

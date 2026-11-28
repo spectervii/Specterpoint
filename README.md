@@ -14,7 +14,7 @@ Next.js 15 (App Router), React 19, Tailwind v4, Neon Postgres, hosted on Vercel.
 | Past DisCo allocations, by date (each area's "supply" calendar) | Nigeria Power Data DisCo history, backfilled automatically |
 | Each area: light now, when it comes on, how often, how long, quality, six-month calendar | Contributions from residents (On / Weak / Off) |
 | Map and area names | geoBoundaries ADM1/ADM2 (CC BY 4.0, GRID3 2022), 774 LGAs |
-| Streets (Lagos, Abuja, Port Harcourt, Warri/Effurun, Asaba) | OpenStreetMap (ODbL), rebuilt monthly |
+| Streets for 32 cities: Lagos, Abuja, Port Harcourt, Warri/Effurun, Asaba, Benin City; Ibadan, Ogbomosho, Oyo, Abeokuta, Ota, Sagamu, Ijebu-Ode, Osogbo, Ile-Ife, Ilesa, Akure, Ado-Ekiti; Enugu, Nsukka, Onitsha, Awka, Nnewi, Owerri, Aba, Umuahia, Abakaliki | OpenStreetMap (ODbL), rebuilt monthly |
 | Address search | Local list of LGAs and neighbourhoods, then OpenStreetMap Nominatim |
 
 No public source publishes outages street by street, so area figures come from contributions. The official figures give the national and DisCo context.

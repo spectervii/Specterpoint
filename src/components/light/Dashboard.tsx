@@ -8,13 +8,14 @@ import { Download } from "lucide-react";
 import { ThemeToggle } from "@/components/motion/theme-toggle";
 import { NEIGHBOURHOODS } from "@/data/neighbourhoods";
 import { avgHours, lightLevel } from "@/lib/light";
-import type { Snapshot } from "@/lib/snapshot";
+import { DISCO_NAMES, type Snapshot } from "@/lib/snapshot";
 import type { AreaStats } from "@/lib/stats";
 import { timeAgo } from "@/lib/time";
 import AreaPage from "./AreaPage";
 import Bulb from "./Bulb";
 import GridPage from "./GridPage";
 import NigeriaMap, { type Geo, type Place } from "./NigeriaMap";
+import { cityPoint, inCity, streetIndex } from "./Streets";
 
 const POLL_MS = 5 * 60_000;
 
@@ -118,11 +119,38 @@ export default function Dashboard({ initial, initialPlace }: { initial: Snapshot
     return [...hoods, ...lgas];
   }, [placeList, places]);
 
-  const levels = useMemo(() => {
+  // what colours the map: official DisCo power (covers every LGA) or residents' reports
+  const [mode, setMode] = useState<"disco" | "reports">("disco");
+  const reportLevels = useMemo(() => {
     const out: Record<string, number | null> = {};
     for (const [id, s] of Object.entries(snap?.areas ?? {})) out[id] = lightLevel(avgHours(s));
     return out;
   }, [snap]);
+  const discoMax = useMemo(() => Math.max(1, ...Object.values(snap?.discos ?? {}).map((d) => d.mw)), [snap]);
+  const discoLevels = useMemo(() => {
+    const out: Record<string, number | null> = {};
+    for (const p of placeList) {
+      const mw = snap?.discos[p.d]?.mw;
+      out[p.id] = mw === undefined ? null : Math.max(1, Math.min(4, Math.ceil((mw / discoMax) * 4)));
+    }
+    return out;
+  }, [snap, placeList, discoMax]);
+  const levels = mode === "disco" ? discoLevels : reportLevels;
+  const discoMin = useMemo(() => Math.min(...Object.values(snap?.discos ?? {}).map((d) => d.mw)), [snap]);
+  const legend =
+    mode === "disco"
+      ? { label: "MW each DisCo has today", from: `${Number.isFinite(discoMin) ? Math.round(discoMin) : 0} MW`, to: `${Math.round(discoMax)} MW`, empty: null, zero: false }
+      : { label: "Hours of light a day", from: "0h", to: "24h", empty: "No reports", zero: true };
+  const describe = useCallback(
+    (id: string) => {
+      const p = places.get(id);
+      const d = p ? snap?.discos[p.d] : undefined;
+      if (mode === "disco") return d && p ? `${DISCO_NAMES[p.d]?.replace(" Electric", "")} · ${Math.round(d.mw)} MW` : "";
+      const h = avgHours(snap?.areas[id]);
+      return h === null ? "No reports" : `${h.toFixed(1)} h a day`;
+    },
+    [mode, places, snap],
+  );
   const live = useMemo(() => Object.entries(snap?.areas ?? {}).filter(([, s]) => s.now && s.now.s !== "off").map(([id]) => id), [snap]);
 
   const onReported = useCallback((id: string, stats: AreaStats) => {
@@ -169,7 +197,7 @@ export default function Dashboard({ initial, initialPlace }: { initial: Snapshot
 
           <section ref={mapLeaf} className="leaf left scroll-mt-3" aria-label="Map">
             {geo ? (
-              <NigeriaMap geo={geo} places={places} levels={levels} selected={selected} onPick={pick} live={live} pin={pin} onLocate={findMe} locating={locate === "busy"} />
+              <NigeriaMap geo={geo} places={places} levels={levels} selected={selected} onPick={pick} live={live} pin={pin} onLocate={findMe} locating={locate === "busy"} mode={mode} onMode={setMode} legend={legend} describe={describe} />
             ) : (
               <div className="grid h-full place-items-center"><LoadingState label="Drawing the map" variant="Dots" /></div>
             )}
@@ -187,8 +215,17 @@ export default function Dashboard({ initial, initialPlace }: { initial: Snapshot
                     // an LGA or neighbourhood from the list: zoom in on it straight away,
                     // then move the pin to its exact spot once OpenStreetMap answers
                     const place = places.get(item.area);
-                    if (place) setPin({ x: place.c[0], y: place.c[1], label: item.label });
-                    fetch(`/api/geocode?q=${encodeURIComponent(`${item.label}, ${place?.s ?? ""}`)}`)
+                    if (place) {
+                      setPin({ x: place.c[0], y: place.c[1], label: item.label });
+                      // an LGA that takes in part of a street-mapped city: aim at the city part
+                      streetIndex().then((idx) => {
+                        if (inCity(idx, place.c[0], place.c[1])) return;
+                        const pt = cityPoint(idx, place.b);
+                        if (pt) setPin((cur) => (cur && cur.label === item.label ? { x: pt[0], y: pt[1], label: item.label } : cur));
+                      }).catch(() => {});
+                    }
+                    // a neighbourhood: OpenStreetMap knows its exact spot (an LGA's own answer is just its rural middle)
+                    if (item.key.startsWith("nb:")) fetch(`/api/geocode?q=${encodeURIComponent(`${item.label}, ${place?.s ?? ""}`)}`)
                       .then((r) => r.json())
                       .then((j: { results?: { area: string; pt?: [number, number] }[] }) => {
                         const hit = j.results?.find((r) => r.area === item.area && r.pt);
